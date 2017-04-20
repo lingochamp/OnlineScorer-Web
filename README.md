@@ -3,6 +3,9 @@
 
 运行环境：Chrome。由于chrome对getUserMedia方法的限制，需要在https环境下使用。
 
+## DEMO
+https://hybrid.staging.llsapp.com/lls-web-recorder/web.html
+
 ## 使用方法
 ### 引入sdk
 在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-0.0.1.js
