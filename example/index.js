@@ -5,9 +5,6 @@ import './styles/theme.scss';
 
 const recorder = window.llsRecorder;
 
-const SECRET = 'test';
-const APP_ID = 'test';
-
 let audioBlob;
 
 const QUESTIONS = [{
@@ -29,9 +26,10 @@ class App extends Component {
   }
 
   handleInitApi = () => {
+    const {secret, appId} = this.state;
     recorder.init({
-      secret: SECRET,
-      appId: APP_ID
+      secret,
+      appId
     });
   }
 
@@ -90,6 +88,18 @@ class App extends Component {
     });
   }
 
+  handleAppIdChange = e => {
+    this.setState({
+      appId: e.target.value
+    });
+  }
+
+  handleSecretChange = e => {
+    this.setState({
+      secret: e.target.value
+    });
+  }
+
   renderReupload() {
     if (this.state.reupload) {
       return (
@@ -128,6 +138,16 @@ class App extends Component {
   render() {
     return (
       <div className="native-apis-list">
+        <input
+          className="api-test-input"
+          placeholder="appId"
+          onChange={this.handleAppIdChange}
+          />
+        <input
+          className="api-test-input"
+          placeholder="secret(密码)"
+          onChange={this.handleSecretChange}
+          />
         <button
           className="api-test-btn"
           onClick={this.handleInitApi}
