@@ -1,5 +1,5 @@
 import Recorder from './Recorder';
-const SERVER_URL = 'wss://gaia-api.llsapp.com/openapi/stream/upload';
+const SERVER_URL = 'wss://openapi.llsapp.com/openapi/stream/upload';
 
 let audioContext;
 let recorder;
