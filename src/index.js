@@ -1,5 +1,5 @@
 import Recorder from './Recorder';
-const SERVER_URL = 'wss://rating.llsstaging.com/openapi/stream/upload';
+const SERVER_URL = 'wss://gaia-api.llsapp.com/openapi/stream/upload';
 
 let audioContext;
 let recorder;
@@ -30,16 +30,16 @@ function init({secret, appId}) {
   });
 }
 
-function startRecord(item) {
+function startRecord(config) {
   if (!recorder) {
     const err = new Error('Recorder is not initialised');
     throw err;
   }
-  recorder.record(item);
+  recorder.record(config);
 }
 
-function stopRecord(config) {
-  return recorder.stop(config);
+function stopRecord() {
+  return recorder.stop();
 }
 
 function reupload(config) {

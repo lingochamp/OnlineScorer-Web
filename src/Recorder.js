@@ -24,13 +24,13 @@ class Recorder {
 
       if (command === 'websocketError') {
         throw new Error('websocket 连接失败');
+      } else if (command === 'getResult' && data.status === -20 && this.recording) {
+        this.recording = false; // Stop recording
       }
 
       const cb = this.callbacks[command].pop();
       if (typeof cb === 'function') {
         cb(data);
-      } else if (command === 'getResult' && data.status === -20) {
-        throw new Error('认证失败');
       }
     };
 
@@ -49,8 +49,11 @@ class Recorder {
     node.connect(this.context.destination);
   }
 
-  record(item) {
+  record({question, getAudio, getResult}) {
     this.recording = true;
+
+    this.callbacks.exportAudio.push(getAudio);
+    this.callbacks.getResult.push(getResult);
 
     this.worker.postMessage({
       command: 'init',
@@ -58,16 +61,14 @@ class Recorder {
         secret: this.secret,
         serverUrl: this.serverUrl,
         appId: this.appId,
-        recordItem: item,
+        recordItem: question,
         sampleRate: this.context.sampleRate
       }
     });
   }
 
-  stop({getResult, getAudio}) {
+  stop() {
     this.recording = false;
-    this.callbacks.exportAudio.push(getAudio);
-    this.callbacks.getResult.push(getResult);
 
     this.worker.postMessage({
       command: 'stop'

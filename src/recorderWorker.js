@@ -110,7 +110,6 @@ function onGetResult(event) {
       const resultView = new DataView(resultBuffer);
       const metaLen = resultView.getUint32(0);
       const meta = extractResult(resultBuffer, metaLen, 4);
-
       postMessage({
         command: 'getResult',
         data: getResult(meta)
@@ -176,7 +175,9 @@ function sendEOF() {
   eofView[1] = 0x4f;
   eofView[2] = 0x53;
 
-  websocket.send(eof);
+  if (websocket.readyState === 1) {
+    websocket.send(eof);
+  }
 }
 
 function transformToPCM(samples) {

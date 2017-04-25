@@ -34,7 +34,12 @@ class App extends Component {
   }
 
   handleStartRecord = () => {
-    recorder.startRecord(QUESTIONS[this.state.questionIndex]);
+    recorder.startRecord({
+      question: QUESTIONS[this.state.questionIndex],
+      getResult: this.handleGetResult,
+      getAudio: this.handleGetAudio
+    });
+
     this.setState({
       result: null,
       audioUrl: null
@@ -42,10 +47,7 @@ class App extends Component {
   }
 
   handleStopRecord = () => {
-    recorder.stopRecord({
-      getResult: this.handleGetResult,
-      getAudio: this.handleGetAudio
-    });
+    recorder.stopRecord();
   }
 
   handleGetAudio = audio => {

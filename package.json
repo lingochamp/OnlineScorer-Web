@@ -2,7 +2,7 @@
   "name": "lls-web-recorder",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "src/index.js",
   "scripts": {
     "build": "webpack -w",
     "start": "node server.js"
@@ -10,6 +10,10 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
+  "repository": {
+    "type" : "git",
+    "url" : "https://github.com/lingochamp/OnlineScorer-Web.git"
+  },
   "devDependencies": {
     "babel-cli": "^6.24.0",
     "babel-core": "^6.24.0",

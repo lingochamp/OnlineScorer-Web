@@ -4,13 +4,14 @@
 运行环境：Chrome。由于chrome对getUserMedia方法的限制，需要在https环境下使用。
 
 ## DEMO
-https://hybrid.staging.llsapp.com/lls-web-recorder/web.html
+https://hybrid.liulishuo.com/lls-web-recorder/web.html
 
 ## 使用方法
 ### 引入sdk
-在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-0.0.1.js
+在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-v1.0.0.js
 
 ### 初始化
+传入事先约定的appId和密码(secret)。
 ```
   llsRecorder.init({
     secret: 'xx',
@@ -19,16 +20,17 @@ https://hybrid.staging.llsapp.com/lls-web-recorder/web.html
 ```
 
 ### 录音
-```
-  llsRecorder.startRecord({ // 参数为题目信息，目前支持readaloud题型
-    type: 'readaloud', // 题型
-    reftext: 'Hope is a good thing' // 句子内容
-  });
-```
+需要传入题目，获得打分报告的回调和获得音频的回调。
 
-### 停止录音
+由于SDK是通过边录制边上传的形式上传音频，若验证失败，SDK会立即停止录音（无论用户是否调用`stopRecord`），
+并返回status= -20(验证失败)的打分报告。
+
 ```
-  llsRecorder.stopRecord({
+  llsRecorder.startRecord({
+    question: { // 题目信息，目前支持readaloud题型
+      type: 'readaloud', // 题型
+      reftext: 'Hope is a good thing' // 句子内容
+    },
     getResult: function(resp) {
       if (resp.success) { // 打分成功
         var report = resp.report; // 打分报告
@@ -41,11 +43,20 @@ https://hybrid.staging.llsapp.com/lls-web-recorder/web.html
     }
   });
 ```
+
+### 停止录音
+若验证成功，停止录音后会调用`startRecord`中传入的回调返回音频数据以及打分报告。
+
+若验证失败，停止录音后会调用`startRecord`中传入的getAudio返回空音频。
+```
+  llsRecorder.stopRecord();
+```
+
 ### 重新上传录音
 ```
   llsRecorder.reupload({
     audioBlob: <audioBlob>, // 必填，需要重传的音频
-    question: , // 必填，题目
+    question: { ... }, // 必填，题目
     getResult: function(resp) { // 打分报告回调
       if (resp.success) { // 打分成功
         var report = resp.report; // 打分报告

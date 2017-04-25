@@ -18,7 +18,7 @@ if (process.env.NODE_ENV === 'production') {
   );
 }
 
-const version = '0.0.1';
+const version = 'v1.0.0';
 
 module.exports = {
   output: {
