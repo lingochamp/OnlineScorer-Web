@@ -1,6 +1,5 @@
 **/node_modules
-lib
 dist
 **/qrconfig.json
-shipitfile.js
 npm-debug.log
+shipitfile.js

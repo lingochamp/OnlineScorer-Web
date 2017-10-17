@@ -8,15 +8,11 @@ const plugins = [
   new webpack.NoEmitOnErrorsPlugin(),
   new webpack.DefinePlugin({
     'process.env': {
-        NODE_ENV: JSON.stringify(process.env.NODE_ENV)
-    },
-  })
+      NODE_ENV: true
+    }
+  }),
+  new webpack.optimize.UglifyJsPlugin({minimize: true})
 ];
-if (process.env.NODE_ENV === 'production') {
-  plugins.push(
-    new webpack.optimize.UglifyJsPlugin({ minimize: true })
-  );
-}
 
 const version = 'v1.0.0';
 
@@ -26,10 +22,8 @@ module.exports = {
     libraryTarget: 'umd',
     umdNamedDefine: true,
     library: '[name]',
-    path: path.join(__dirname, "/dist/lib")
+    path: path.join(__dirname, 'dist/assets')
   },
-  cache: true,
-  devtool: 'source-map',
   entry: {
     llsRecorder: './src/index.js'
   },
