@@ -8,7 +8,7 @@ https://hybrid.liulishuo.com/lls-web-recorder/web.html
 
 ## 使用方法
 ### 引入sdk
-在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-v1.0.0.js
+在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-v1.0.1.js
 
 ### 初始化
 传入事先约定的appId和密码(secret)。
@@ -25,6 +25,18 @@ https://hybrid.liulishuo.com/lls-web-recorder/web.html
 由于SDK是通过边录制边上传的形式上传音频，若验证失败，SDK会立即停止录音（无论用户是否调用`stopRecord`），
 并返回status= -20(验证失败)的打分报告。
 
+| 参数名       | 类型    |  描述  |
+|-------------|--------|--------|
+|question|questionParam|不得为空|
+|getResult|function(resp)|获得打分报告后的回调函数, 不得为空|
+|getAudio|function(blob)|录音上传成功的回调，返回blob音频数据|
+
+#### questionParam
+| key         | 类型      | 说明       | 必填|
+|-------------|----------|-----------|-----|
+|type|string|题型，目前只支持'readaloud'|true|
+|reftext|string|句子内容|true|
+|targetAudience|number|针对用户。0: child; 1: adult; 默认是1|false|
 ```
   llsRecorder.startRecord({
     question: { // 题目信息，目前支持readaloud题型

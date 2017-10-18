@@ -7,7 +7,8 @@ let audioBlob;
 
 const QUESTIONS = [{
   type: 'readaloud',
-  reftext: 'Hope is a good thing'
+  reftext: 'Hope is a good thing',
+  targetAudience: 0
 }, {
   type: 'readaloud',
   reftext: 'There are two or three classes on every weekday.'
