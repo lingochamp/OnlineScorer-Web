@@ -80,6 +80,7 @@ function initAudioSetting(startUserMediaCallback) {
   navigator.mediaDevices.getUserMedia({audio: true, video: false})
     .then(startUserMediaCallback)
     .catch(e => {
+      // TODO: throw error
       __log('No live audio input: ' + e);
     });
 }

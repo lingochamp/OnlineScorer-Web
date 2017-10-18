@@ -4,7 +4,7 @@
 运行环境：Chrome。由于chrome对getUserMedia方法的限制，需要在https环境下使用。
 
 ## DEMO
-https://hybrid.liulishuo.com/lls-web-recorder/web.html
+https://hybrid.liulishuo.com/lls-web-recorder/index.html
 
 ## 使用方法
 ### 引入sdk
