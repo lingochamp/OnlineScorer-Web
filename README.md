@@ -107,6 +107,7 @@ https://hybrid.liulishuo.com/lls-web-recorder/index.html
 -30 - 请求过于频繁
 -31 - 余额不足
 -41 - 排队超时(超过15秒)
+-97 - 超过15秒没有收到语音包
 -99 - 计算资源不可用
 -100 - 未知错误
 ```
