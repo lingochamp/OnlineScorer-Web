@@ -8,20 +8,20 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const env = JSON.stringify(process.env.NODE_ENV);
 const localDev = !env || env === 'development';
 
-const htmlPluginMinify = localDev
-  ? {}
-  : {
-    removeComments: true,
-    collapseWhitespace: true,
-    removeRedundantAttributes: true,
-    useShortDoctype: true,
-    removeEmptyAttributes: true,
-    removeStyleLinkTypeAttributes: true,
-    keepClosingSlash: true,
-    minifyJS: true,
-    minifyCSS: true,
-    minifyURLs: true,
-  };
+const htmlPluginMinify = localDev ?
+  {} :
+{
+  removeComments: true,
+  collapseWhitespace: true,
+  removeRedundantAttributes: true,
+  useShortDoctype: true,
+  removeEmptyAttributes: true,
+  removeStyleLinkTypeAttributes: true,
+  keepClosingSlash: true,
+  minifyJS: true,
+  minifyCSS: true,
+  minifyURLs: true
+};
 
 const plugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
@@ -44,14 +44,8 @@ if (localDev) {
     'webpack/hot/only-dev-server'
   ].concat(entry);
 } else {
-  plugins.push(new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production'),
-      BABEL_ENV: JSON.stringify('production')
-    }
-  }));
   plugins.push(new webpack.LoaderOptionsPlugin({
-    minimize: true,
+    minimize: true
   }));
 }
 
@@ -59,7 +53,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist/assets'),
     filename: localDev ? '[name].js' : '[name]-[hash].js',
-    publicPath: localDev ? 'http://localhost:3001/' : '//cdn.llscdn.com/hybrid/lls-web-recorder/'
+    publicPath: localDev ? 'http://localhost:3001/' : '/assets' // '//cdn.llscdn.com/hybrid/lls-web-recorder/'
   },
   cache: true,
   devtool: 'eval',
@@ -72,12 +66,24 @@ module.exports = {
   },
   module: {
     rules: [{
-      test: /\.js?$/,
-      exclude: /node_modules/,
-      use: ['babel-loader']
-    }, {
-      test: /\.(css|scss)$/,
-      use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+      oneOf: [{
+        test: /\.worker\.js$/,
+        loader: require.resolve('worker-loader'),
+        options: {
+          inline: true,
+          fallback: false
+        }
+      }, {
+        test: /\.js?$/,
+        exclude: /node_modules/,
+        loader: require.resolve('babel-loader'),
+        options: {
+          cacheDirectory: true
+        }
+      }, {
+        test: /\.(css|scss)$/,
+        use: ['style-loader', 'css-loader', 'postcss-loader', 'sass-loader']
+      }]
     }]
   },
   plugins

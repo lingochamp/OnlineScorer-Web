@@ -4,7 +4,7 @@
   "description": "",
   "main": "./lib",
   "scripts": {
-    "build:lib": "babel src --out-dir lib && webpack --config  webpack.config.js",
+    "build:lib": "babel src --out-dir lib && NODE_ENV=production webpack --config webpack.config.js",
     "build:example": "NODE_ENV=production webpack --config  webpack.example.config.js",
     "build": "npm run clean && npm run build:lib && npm run build:example && del-cli dist/assets/*.worker.js",
     "clean": "del-cli dist lib -f",

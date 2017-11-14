@@ -6,11 +6,6 @@ const path = require('path');
 const plugins = [
   new webpack.optimize.OccurrenceOrderPlugin(),
   new webpack.NoEmitOnErrorsPlugin(),
-  new webpack.DefinePlugin({
-    'process.env': {
-      NODE_ENV: JSON.stringify('production')
-    }
-  }),
   new webpack.optimize.UglifyJsPlugin({minimize: true})
 ];
 
@@ -29,9 +24,19 @@ module.exports = {
   },
   module: {
     rules: [{
+      test: /\.worker\.js$/,
+      exclude: /node_modules/,
+      loader: require.resolve('worker-loader'),
+      options: {
+        inline: true
+      }
+    }, {
       test: /\.js$/,
       exclude: /node_modules/,
-      use: ['babel-loader', 'eslint-loader']
+      loader: require.resolve('babel-loader'),
+      options: {
+        cacheDirectory: true
+      }
     }]
   },
   plugins

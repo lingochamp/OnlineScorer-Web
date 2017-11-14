@@ -1,4 +1,4 @@
-const RecorderWorker = require('worker-loader?inline!./recorderWorker');
+import RecorderWorker from './recorder.worker.js';
 
 class Recorder {
   recording = false;
