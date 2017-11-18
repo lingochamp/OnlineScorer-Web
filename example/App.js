@@ -30,6 +30,7 @@ class App extends Component {
       secret,
       appId
     });
+    // TODO: after init
   }
 
   handleStartRecord = () => {
@@ -38,6 +39,7 @@ class App extends Component {
       getResult: this.handleGetResult,
       getAudio: this.handleGetAudio
     });
+    // after start
 
     this.setState({
       result: null,
