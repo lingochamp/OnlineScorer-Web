@@ -53,7 +53,7 @@ module.exports = {
   output: {
     path: path.join(__dirname, 'dist/assets'),
     filename: localDev ? '[name].js' : '[name]-[hash].js',
-    publicPath: localDev ? 'http://localhost:3001/' : '/assets' // '//cdn.llscdn.com/hybrid/lls-web-recorder/'
+    publicPath: localDev ? 'http://localhost:3001/' : '//cdn.llscdn.com/hybrid/lls-web-recorder/'
   },
   cache: true,
   devtool: 'eval',
