@@ -1,5 +1,3 @@
-/* global onmessage, postMessage */
-/* eslint no-unused-vars: 0 */
 import getMeta from './getMeta';
 import getResult from './getResult';
 
@@ -10,7 +8,7 @@ let recordBuffers;
 let recordTotalLength;
 let sampleRate;
 
-onmessage = e => { // eslint-disable-line no-global-assign
+self.addEventListener('message', e => {
   switch (e.data.command) {
     case 'init':
       init(e.data.config);
@@ -27,7 +25,7 @@ onmessage = e => { // eslint-disable-line no-global-assign
     default:
       break;
   }
-};
+});
 
 function init(config) {
   const {secret, serverUrl, recordItem, appId} = config;
@@ -40,13 +38,18 @@ function init(config) {
   websocket.onmessage = onGetResult;
 
   websocket.onerror = e => {
-    postMessage({
+    self.postMessage({
       command: 'websocketError',
       data: e
     });
   };
 
   websocket.onopen = () => {
+    // Tell recorder websocket is open, can send data now
+    self.postMessage({
+      command: 'websocketInitSucc'
+    });
+
     sendHead(recordItem, secret, appId);
   };
 }
@@ -60,6 +63,10 @@ function record(inputBuffer) {
 }
 
 function stop() {
+  // Check ready state
+  if (!websocket || websocket.readyState !== 1) {
+    return;
+  }
   // Send EOF
   sendEOF();
 
@@ -157,7 +164,6 @@ function sendHead(item, secret, appId) {
 
   writeString(view, 4, meta);
   websocket.send(headBuffer);
-  console.log('sended head');
 }
 
 function send(inputBuffer) {

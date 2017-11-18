@@ -1,4 +1,5 @@
 import RecorderWorker from './recorder.worker.js';
+import {createDefaultPromise} from './promise';
 
 class Recorder {
   recording = false;
@@ -24,13 +25,19 @@ class Recorder {
 
       if (command === 'websocketError') {
         throw new Error('websocket 连接失败');
+      } else if (command === 'websocketInitSucc') {
+        // Start recording now
+        this.recording = true;
+        this.initPromise.resolve();
       } else if (command === 'getResult' && data.status === -20 && this.recording) {
         this.recording = false; // Stop recording
       }
 
-      const cb = this.callbacks[command].pop();
-      if (typeof cb === 'function') {
-        cb(data);
+      if (this.callbacks[command]) {
+        const cb = this.callbacks[command].pop();
+        if (typeof cb === 'function') {
+          cb(data);
+        }
       }
     };
 
@@ -54,6 +61,7 @@ class Recorder {
 
     this.callbacks.exportAudio.push(getAudio);
     this.callbacks.getResult.push(getResult);
+    this.initPromise = createDefaultPromise();
 
     this.worker.postMessage({
       command: 'init',
@@ -65,6 +73,8 @@ class Recorder {
         sampleRate: this.context.sampleRate
       }
     });
+
+    return this.initPromise;
   }
 
   stop() {

@@ -10,23 +10,30 @@ function __log(e, data) {
 
 // TODO: check websocket support
 function init({secret, appId}) {
-  if (!secret) {
-    throw new Error('secret is empty');
-  }
+  return new Promise((succ, rej) => {
+    if (!secret) {
+      rej(new Error('secret is empty'));
+      return;
+    }
 
-  if (!appId) {
-    throw new Error('appId is empty');
-  }
+    if (!appId) {
+      rej(new Error('appId is empty'));
+      return;
+    }
 
-  initAudioSetting(stream => {
-    const input = audioContext.createMediaStreamSource(stream);
-    recorder = new Recorder(input, {
-      secret,
-      appId,
-      serverUrl: SERVER_URL
+    initAudioSetting().then(stream => {
+      const input = audioContext.createMediaStreamSource(stream);
+      recorder = new Recorder(input, {
+        secret,
+        appId,
+        serverUrl: SERVER_URL
+      });
+
+      __log('Recorder initialised.');
+      succ();
+    }).catch(e => {
+      rej(e);
     });
-
-    __log('Recorder initialised.');
   });
 }
 
@@ -46,7 +53,7 @@ function reupload(config) {
   return recorder.reupload(config);
 }
 
-function initAudioSetting(startUserMediaCallback) {
+function initAudioSetting() {
   try {
     // Webkit shim
     window.AudioContext = window.AudioContext || window.webkitAudioContext;
@@ -74,15 +81,10 @@ function initAudioSetting(startUserMediaCallback) {
     __log('Audio context set up.');
     __log('navigator.getUserMedia ' + (navigator.mediaDevices.getUserMedia ? 'available.' : 'not present!'));
   } catch (e) {
-    throw new Error('No web audio support in this browser!');
+    return Promise.reject(e);
   }
 
-  navigator.mediaDevices.getUserMedia({audio: true, video: false})
-    .then(startUserMediaCallback)
-    .catch(e => {
-      // TODO: throw error
-      __log('No live audio input: ' + e);
-    });
+  return navigator.mediaDevices.getUserMedia({audio: true, video: false});
 }
 
 module.exports = {
