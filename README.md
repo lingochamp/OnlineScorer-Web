@@ -16,6 +16,8 @@ https://hybrid.liulishuo.com/lls-web-recorder/index.html
   llsRecorder.init({
     secret: 'xx',
     appId: 'xx'
+  }).then(() => {
+    // init finished
   });
 ```
 
@@ -53,6 +55,8 @@ https://hybrid.liulishuo.com/lls-web-recorder/index.html
     getAudio: function(blob) { // 返回音频数据
       var audioUrl = window.URL.createObjectURL(blob);
     }
+  }).then(() => {
+    // after starting record
   });
 ```
 

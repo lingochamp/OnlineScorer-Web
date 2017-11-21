@@ -42,7 +42,7 @@ function startRecord(config) {
     const err = new Error('Recorder is not initialised');
     throw err;
   }
-  recorder.record(config);
+  return recorder.record(config);
 }
 
 function stopRecord() {

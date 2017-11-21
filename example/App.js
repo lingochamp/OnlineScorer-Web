@@ -20,7 +20,8 @@ class App extends Component {
 
     this.state = {
       questionIndex: 0,
-      reupload: false
+      reupload: false,
+      statusMessage: 'Wait to Init'
     };
   }
 
@@ -29,8 +30,11 @@ class App extends Component {
     recorder.init({
       secret,
       appId
+    }).then(() => {
+      this.setState({
+        statusMessage: 'Recorder Init Finished'
+      });
     });
-    // TODO: after init
   }
 
   handleStartRecord = () => {
@@ -38,8 +42,11 @@ class App extends Component {
       question: QUESTIONS[this.state.questionIndex],
       getResult: this.handleGetResult,
       getAudio: this.handleGetAudio
+    }).then(() => {
+      this.setState({
+        statusMessage: 'Start Recording'
+      });
     });
-    // after start
 
     this.setState({
       result: null,
@@ -48,6 +55,9 @@ class App extends Component {
   }
 
   handleStopRecord = () => {
+    this.setState({
+      statusMessage: 'Stop Recording'
+    });
     recorder.stopRecord();
   }
 
@@ -81,7 +91,8 @@ class App extends Component {
   handleReupload = () => {
     this.setState({
       result: null,
-      reupload: false
+      reupload: false,
+      statusMessage: 'Reupload'
     });
 
     recorder.reupload({
@@ -109,7 +120,7 @@ class App extends Component {
         <button
           className="api-test-btn"
           onClick={this.handleReupload}
-          >
+        >
           Reupload {this.state.audioUrl}
         </button>
       );
@@ -141,32 +152,33 @@ class App extends Component {
   render() {
     return (
       <div className="native-apis-list">
+        {this.state.statusMessage}
         <input
           className="api-test-input"
           placeholder="appId"
           onChange={this.handleAppIdChange}
-          />
+        />
         <input
           className="api-test-input"
           placeholder="secret(密码)"
           onChange={this.handleSecretChange}
-          />
+        />
         <button
           className="api-test-btn"
           onClick={this.handleInitApi}
-          >
+        >
           init
         </button>
         <button
           className="api-test-btn"
           onClick={this.handleStartRecord}
-          >
+        >
           Start Record
         </button>
         <button
           className="api-test-btn"
           onClick={this.handleStopRecord}
-          >
+        >
           Stop Record
         </button>
         {this.renderReupload()}
@@ -175,7 +187,7 @@ class App extends Component {
         <button
           className="api-test-btn"
           onClick={this.handleSwitchQuestion}
-          >
+        >
           Switch question
         </button>
         <pre>{JSON.stringify(QUESTIONS[this.state.questionIndex])}</pre>
