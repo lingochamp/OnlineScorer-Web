@@ -8,7 +8,7 @@ https://hybrid.liulishuo.com/lls-web-recorder/index.html
 
 ## 使用方法
 ### 引入sdk
-在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-v1.0.2.js
+在需要调用JS接口的页面引入如下JS文件:  https://cdn.llscdn.com/hybrid/lls-web-recorder/llsRecorder-v1.0.3.js
 
 ### 初始化
 传入事先约定的appId和密码(secret)。
@@ -81,6 +81,11 @@ https://hybrid.liulishuo.com/lls-web-recorder/index.html
       }
     }
   });
+```
+
+### 关闭recorder
+```
+  llsRecorder.close();
 ```
 
 ## 打分报告信息

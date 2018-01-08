@@ -114,6 +114,10 @@ class App extends Component {
     });
   }
 
+  handleClose = () => {
+    recorder.close();
+  }
+
   renderReupload() {
     if (this.state.reupload) {
       return (
@@ -191,6 +195,12 @@ class App extends Component {
           Switch question
         </button>
         <pre>{JSON.stringify(QUESTIONS[this.state.questionIndex])}</pre>
+        <button
+          className="api-test-btn"
+          onClick={this.handleClose}
+        >
+          Close Recorder
+        </button>
       </div>
     );
   }

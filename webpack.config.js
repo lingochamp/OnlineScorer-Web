@@ -9,7 +9,7 @@ const plugins = [
   new webpack.optimize.UglifyJsPlugin({minimize: true})
 ];
 
-const version = 'v1.0.2';
+const version = 'v1.0.3';
 
 module.exports = {
   output: {

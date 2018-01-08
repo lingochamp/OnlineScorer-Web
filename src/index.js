@@ -87,9 +87,15 @@ function initAudioSetting() {
   return navigator.mediaDevices.getUserMedia({audio: true, video: false});
 }
 
+function close() {
+  audioContext.close();
+  audioContext = null;
+}
+
 module.exports = {
   init,
   startRecord,
   stopRecord,
-  reupload
+  reupload,
+  close
 };
