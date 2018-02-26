@@ -62,7 +62,7 @@ function initAudioSetting() {
       navigator.mediaDevices = {};
     }
 
-    if (navigator.mediaDevices.getUserMedia !== 'function') {
+    if (typeof navigator.mediaDevices.getUserMedia !== 'function') {
       navigator.mediaDevices.getUserMedia = constraints => {
         const getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia;
         if (!getUserMedia) {
